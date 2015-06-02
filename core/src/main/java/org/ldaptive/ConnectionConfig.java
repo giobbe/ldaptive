@@ -1,6 +1,7 @@
 /* See LICENSE for licensing and NOTICE for copyright. */
 package org.ldaptive;
 
+import org.ldaptive.ssl.SocketConfig;
 import org.ldaptive.ssl.SslConfig;
 
 /**
@@ -31,6 +32,9 @@ public class ConnectionConfig extends AbstractConfig
 
   /** Connection initializer to execute on {@link Connection#open()}. */
   private ConnectionInitializer connectionInitializer;
+
+  /** Socket Configuration for SSL and startTLS connections. */
+  private SocketConfig socketConfig;
 
 
   /** Default constructor. */
@@ -144,6 +148,27 @@ public class ConnectionConfig extends AbstractConfig
     sslConfig = config;
   }
 
+  /**
+   * Returns the socket config.
+   *
+   * @return  socket config
+   */
+  public SocketConfig getSocketConfig()
+  {
+    return socketConfig;
+  }
+
+  /**
+   * Sets the socket config.
+   *
+   * @param  config  socket config
+   */
+  public void setSocketConfig(final SocketConfig sConfig)
+  {
+    checkImmutable();
+    logger.trace("setting socketConfig: {}", sConfig);
+    socketConfig = sConfig;
+  }
 
   /**
    * Returns whether the SSL protocol will be used for connections.
@@ -232,6 +257,7 @@ public class ConnectionConfig extends AbstractConfig
     cc.setResponseTimeout(config.getResponseTimeout());
     cc.setSslConfig(config.getSslConfig());
     cc.setUseSSL(config.getUseSSL());
+    cc.setSocketConfig(config.getSocketConfig());
     cc.setUseStartTLS(config.getUseStartTLS());
     cc.setConnectionInitializer(config.getConnectionInitializer());
     return cc;
@@ -244,7 +270,7 @@ public class ConnectionConfig extends AbstractConfig
     return
       String.format(
         "[%s@%d::ldapUrl=%s, connectTimeout=%s, responseTimeout=%s, " +
-        "sslConfig=%s, useSSL=%s, useStartTLS=%s, connectionInitializer=%s]",
+        "sslConfig=%s, useSSL=%s, useStartTLS=%s, connectionInitializer=%s, socketConfig=%s]",
         getClass().getName(),
         hashCode(),
         ldapUrl,
@@ -253,6 +279,7 @@ public class ConnectionConfig extends AbstractConfig
         sslConfig,
         useSSL,
         useStartTLS,
-        connectionInitializer);
+        connectionInitializer,
+        socketConfig);
   }
 }

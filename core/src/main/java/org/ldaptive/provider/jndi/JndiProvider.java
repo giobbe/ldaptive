@@ -129,6 +129,7 @@ public class JndiProvider implements Provider<JndiProviderConfig>
     if (factory == null && cc.getSslConfig() != null && !cc.getSslConfig().isEmpty()) {
       final TLSSocketFactory sf = new TLSSocketFactory();
       sf.setSslConfig(cc.getSslConfig());
+      sf.setSocketConfig(cc.getSocketConfig());
       try {
         sf.initialize();
       } catch (GeneralSecurityException e) {
